@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
@@ -33,6 +34,7 @@ export default function Home() {
 
       const result = await response.json();
       setData(result); // Store the fetched data
+      console.log(data)
     } catch (err) {
       setError("Failed to fetch data"); // Handle error
     } finally {
