@@ -14,6 +14,22 @@ def home():
     return jsonify(data)
 
 def parse_course_data(json_data):
+
+    # Extract course number
+    crn = json_data["CRN"]
+
+    # Extract course number
+    subject = json_data["subject"]
+
+    # Extract course number
+    course_no = json_data["courseNum"]
+
+    # Extract course number
+    section_no = json_data["sectionNum"]
+
+    # Extract course number
+    title = json_data["title"]
+
     # Extract available seats
     seats_pattern = re.search(r"(\d+) out of (\d+)", json_data["seats"])
     available_seats = int(seats_pattern.group(1)) if seats_pattern else "Unknown"
@@ -26,6 +42,11 @@ def parse_course_data(json_data):
     meeting_days = meeting_info[6] if len(meeting_info) > 6 else "Unknown"
 
     return {
+        "crn": crn,
+        "subject": subject,
+        "course_no": course_no,
+        "section_no": section_no,
+        "title": title,
         "available_seats": available_seats,
         "start_time": start_time,
         "end_time": end_time,
