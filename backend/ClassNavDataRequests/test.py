@@ -1,6 +1,7 @@
 import requests
 import time
 import json
+import csv
 
 url = "https://classnav.ou.edu/index_ajax.php"
 headers = {
@@ -84,12 +85,7 @@ for start in range(0, total_records, page_size):
 
 print(f"Total records fetched: {len(all_data)}") 
 
-# Save to JSON
-with open("data.json", "w") as f:
-    json.dump(all_data, f, indent=4)
-
 # Save to CSV (if the data is tabular)
-import csv
 
 with open("data.csv", "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
