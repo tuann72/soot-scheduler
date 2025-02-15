@@ -1,9 +1,12 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from test import fetch_class_data
 import json
 import re
 
 app = Flask(__name__)
+
+CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
