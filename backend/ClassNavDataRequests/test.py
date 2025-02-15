@@ -1,5 +1,4 @@
 import requests
-import time
 import json
 
 def fetch_class_data(total_records=10814, page_size=100, output_file="data.json"):
@@ -25,6 +24,33 @@ def fetch_class_data(total_records=10814, page_size=100, output_file="data.json"
     
     all_data = []
     
+    # Define the keys for each element in the record.
+    # Note: In your desired output you showed an empty key for the 8th value.
+    # It's generally better to use a descriptive name.
+    # Here I've used "classType" for that field.
+    keys = [
+        "icon",           # index 0
+        "CRN",            # index 1
+        "subject",        # index 2
+        "courseNum",      # index 3
+        "sectionNum",     # index 4
+        "title",          # index 5
+        "professorName",  # index 6
+        "classType",      # index 7 (was empty in your example; renamed to "classType")
+        "attendence",     # index 8
+        "category",       # index 9
+        "term",           # index 10
+        "startEndDate",   # index 11
+        "seats",          # index 12
+        "everything",     # index 13
+        "description",    # index 14
+        "professorName2", # index 15
+        "waitlist",       # index 16
+        "finalDate",      # index 17
+        "repeatable",     # index 18
+        "maxHour"         # index 19
+    ]
+    
     for start in range(0, total_records, page_size):
         params = {
             "sEcho": "12",
@@ -42,7 +68,10 @@ def fetch_class_data(total_records=10814, page_size=100, output_file="data.json"
         if response.status_code == 200:
             data = response.json()
             if "aaData" in data and len(data["aaData"]) > 0:
-                all_data.extend(data["aaData"])
+                for record in data["aaData"]:
+                    # Zip the keys with the values from the record to create a dictionary.
+                    labeled_record = dict(zip(keys, record))
+                    all_data.append(labeled_record)
                 print(f"Fetched {len(data['aaData'])} records from page {start // page_size + 1}")
             else:
                 print(f"No data in page {start // page_size + 1}. Stopping.")
@@ -51,15 +80,13 @@ def fetch_class_data(total_records=10814, page_size=100, output_file="data.json"
             print(f"Failed to fetch page {start // page_size + 1}: {response.status_code}")
             break
 
-    
     print(f"Total records fetched: {len(all_data)}")
     
-    # Save to JSON
-    with open("data.json", "w") as f:
+    # Save to JSON file.
+    with open(output_file, "w") as f:
         json.dump(all_data, f, indent=4)
     
     return all_data
-
 
 if __name__ == '__main__':
     fetch_class_data()
