@@ -7,9 +7,11 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    data = fetch_class_data(total_records=10814, page_size=100, output_file="data.json")
-    parsed_data = parse_course_data(data)
-    return jsonify(parsed_data)
+    fetched = fetch_class_data(total_records=10814, page_size=100, output_file="data.json")
+    data = {}
+    for i in range(len(fetched)):
+        data[f"Class {i+1}"] = parse_course_data(fetched[i])
+    return jsonify(data)
 
 def parse_course_data(json_data):
     # Extract available seats
