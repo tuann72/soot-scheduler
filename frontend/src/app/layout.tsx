@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link"; // Import Link for navigation
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu"; // Ensure the correct path
 import "./globals.css";
+import { Separator } from "@/components/ui/separator"
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +30,22 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Navigation Menu */}
-        <div className="flex w-full justify-end px-4">
+        <div className="flex w-full justify-end px-4 py-3">
           <NavigationMenu className="w-1000 ">
             <NavigationMenuList>
               <NavigationMenuItem className="flex space-x-4">
                 <NavigationMenuLink asChild className="hover:text-slate-400">
                   <Link href="/">Home</Link>
                 </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+
+
+              <Separator className="mx-2 bg-slate-400" orientation="vertical"/>
+
+
+              <NavigationMenuList>
+              <NavigationMenuItem className="flex space-x-4">
                 <NavigationMenuLink asChild className="hover:text-slate-400">
                   <Link href="/schedules">Schedules</Link>
                 </NavigationMenuLink>
