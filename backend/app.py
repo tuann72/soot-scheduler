@@ -15,11 +15,11 @@ def home():
 
 def parse_course_data(json_data):
     # Extract available seats
-    seats_pattern = re.search(r"(\d+) out of (\d+)", json_data[12])
+    seats_pattern = re.search(r"(\d+) out of (\d+)", json_data["seats"])
     available_seats = int(seats_pattern.group(1)) if seats_pattern else "Unknown"
 
     # Extract meeting details
-    meeting_info = json_data[13].split(" , ")
+    meeting_info = json_data["everything"].split(" , ")
     
     start_time = meeting_info[2] if len(meeting_info) > 2 else "Unknown"
     end_time = meeting_info[3] if len(meeting_info) > 3 else "Unknown"
