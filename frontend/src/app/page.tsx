@@ -16,6 +16,8 @@ import {
 
 import { useState,useEffect } from "react";
 
+import { filterCoursesByCodes } from "@/lib/filter"
+
 export default function Home() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -72,7 +74,9 @@ export default function Home() {
 
       const result = await response.json();
       setData(result); // Store the fetched data
-      console.log(data)
+      if (data) {
+        filterCoursesByCodes(data,text);
+      }
     } catch (err) {
       setError("Failed to fetch data"); // Handle error
     } finally {
