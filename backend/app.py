@@ -34,6 +34,8 @@ def parse_course_data(json_data):
     # Extract title
     title = json_data["title"]
 
+    prof = json_data["professorName"]
+
     # Extract available seats
     seats_pattern = re.search(r"(\d+) out of (\d+)", json_data["seats"])
     available_seats = int(seats_pattern.group(1)) if seats_pattern else "Unknown"
@@ -51,6 +53,7 @@ def parse_course_data(json_data):
         "course_no": course_no,
         "section_no": section_no,
         "title": title,
+        "professor": prof,
         "available_seats": available_seats,
         "start_time": start_time,
         "end_time": end_time,
