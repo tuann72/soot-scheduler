@@ -1,3 +1,5 @@
+import OpenAI from 'openai';
+
 interface Course {
     available_seats: number;
     course_no: string;
@@ -12,10 +14,10 @@ interface Course {
 }
   
 // Helper function to filter out the courses (i.e., remove the specified courses)
-export function filterCoursesByCodes(
+export async function filterCoursesByCodes(
     courses: Record<string, Course>, // JSON object, not an array
     keepCourses: string
-  ): void {
+  ): Promise<void> {
 
     const courseListForModel: [string, string, string, string, number][] = [];
     // Convert the courses object into an array of courses
@@ -35,7 +37,44 @@ export function filterCoursesByCodes(
 
     // CREATE A VARIABLE FOR POST MODEL FILTERING
     // EXAMPLE: modelResults
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+        throw new Error('OPENAI_API_KEY is not defined in environment variables');
+    }
 
+    const openai = new OpenAI({
+        apiKey: apiKey,
+    });
+
+    const response = await openai.chat.completions.create({
+        messages: [{
+            role: "system",
+            content: `You are a helpful university course planner. The number of hours a course is, is the last digit of the course number
+            for example: CS 1021 is 1 hour, CS 1023 is 3 hours, etc. Consider the letters M, T, W, R, F as days of the week respectively.
+            I want the schedule to have at most 16 hours and minimum 12 hours. 
+            Use this JSON format:
+            {
+              "schedule": [
+                {
+                  "semester": "Season Year",
+                  "courses": []
+                }
+              ]
+            }`
+          }, {
+            role: "user",
+            content: `Here are my required courses: ${courseListForModel}`
+          }],
+          model: "gpt-4o",
+          response_format: { type: "json_object" }
+    });
+
+    const responseText = response.choices[0].message.content;
+    if (responseText === null) {
+        throw new Error('Response text is null');
+    }
+    const parsedResponse = JSON.parse(responseText);
+    console.log(parsedResponse)
     console.log(courseListForModel);
 
     // Return the filtered list of courses (those that do not match)
