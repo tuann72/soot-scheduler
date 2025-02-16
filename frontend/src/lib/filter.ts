@@ -1,6 +1,7 @@
 "use server"
 require('dotenv').config();
 import OpenAI from 'openai';
+import { scheduler } from 'timers/promises';
 
 interface Course {
     available_seats: number;
@@ -19,7 +20,7 @@ interface Course {
 export async function filterCoursesByCodes(
     courses: Record<string, Course>, // JSON object, not an array
     keepCourses: string
-  ): Promise<void> {
+  ): Promise<{ schedule_1: Course[], schedule_2: Course[], schedule_3: Course[] }> {
 
     const courseListForModel: [string, string, string, string, number][] = [];
     // Convert the courses object into an array of courses
@@ -53,14 +54,16 @@ export async function filterCoursesByCodes(
             role: "system",
             content: `You are a helpful university course planner. The number of hours a course is, is the last digit of the course number
             for example: CS 1021 is 1 hour, CS 1023 is 3 hours, etc. Consider the letters M, T, W, R, F as days of the week respectively.
-            I want the schedule to have at most 16 hours and minimum 12 hours. 
+            I want the schedule to have at most 16 hours and minimum 12 hours. Do not choose the same course code in the same schedule. I want
+            the index field that should be only a numerical value. Give up to 3 different schedules.
             Use this JSON format:
             {
-              "schedule": [
-                {
-                  "semester": "Season Year",
-                  "courses": []
-                }
+              "schedule1": [
+                index1,
+                index2,
+                index3,
+                index4,
+                index5
               ]
             }`
           }, {
@@ -76,11 +79,26 @@ export async function filterCoursesByCodes(
         throw new Error('Response text is null');
     }
     const parsedResponse = JSON.parse(responseText);
-    console.log(parsedResponse)
-    console.log(courseListForModel);
+    
+    const result: { schedule_1: Course[], schedule_2: Course[], schedule_3: Course[] } = {
+      schedule_1: [],
+      schedule_2: [],
+      schedule_3: []
+    }
 
-    // Return the filtered list of courses (those that do not match)
-    //return filteredCourses;
+    parsedResponse.schedule1.forEach((index : number) => {
+      result.schedule_1.push(courseArray[index])
+    })
+    parsedResponse.schedule2.forEach((index : number) => {
+      result.schedule_2.push(courseArray[index])
+    })
+    parsedResponse.schedule3.forEach((index : number) => {
+      result.schedule_3.push(courseArray[index])
+    })
+
+    console.log(result)
+
+    return result;
   }
   
   

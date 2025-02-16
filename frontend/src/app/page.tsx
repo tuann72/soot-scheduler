@@ -10,13 +10,6 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import {
   Card,
   CardContent,
   CardDescription,
@@ -98,7 +91,7 @@ export default function Home() {
       const result = await response.json();
       setData(result); // Store the fetched data
       if (data) {
-        filterCoursesByCodes(data,text);
+        const recomdSchedules = filterCoursesByCodes(data,text);
       }
     } catch (err) {
       setError("Failed to fetch data"); // Handle error
