@@ -10,7 +10,8 @@ CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    fetched = fetch_class_data(total_records=10814, page_size=100, output_file="data.json")
+    f = open('../data.json')
+    fetched = json.load(f)
     data = {}
     for i in range(len(fetched)):
         data[f"Class {i+1}"] = parse_course_data(fetched[i])
