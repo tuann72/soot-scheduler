@@ -19,19 +19,19 @@ def home():
 
 def parse_course_data(json_data):
 
-    # Extract course number
+    # Extract CRN
     crn = json_data["CRN"]
 
-    # Extract course number
+    # Extract subject
     subject = json_data["subject"]
 
     # Extract course number
     course_no = json_data["courseNum"]
 
-    # Extract course number
+    # Extract section number
     section_no = json_data["sectionNum"]
 
-    # Extract course number
+    # Extract title
     title = json_data["title"]
 
     # Extract available seats
