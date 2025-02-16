@@ -16,6 +16,8 @@ export function filterCoursesByCodes(
     courses: Record<string, Course>, // JSON object, not an array
     keepCourses: string
   ): void {
+
+    const courseListForModel: [string, string, string, string, number][] = [];
     // Convert the courses object into an array of courses
     const courseArray = Object.values(courses);
   
@@ -26,14 +28,16 @@ export function filterCoursesByCodes(
         const cleanedSubject = course.subject.replace(/\s+/g, ''); // Removes all whitespaces
         const courseCode = `${cleanedSubject}${course.course_no}`; // Combine subject and course_no
 
-        if (keepCoursesFix.includes(courseCode)) {
-            const courseInfo = [courseCode, course.meeting_days, course.start_time, course.end_time]
-            console.log(courseInfo);
+        if (keepCoursesFix.includes(courseCode) && course.available_seats > 0) {
+            courseListForModel.push([courseCode, course.meeting_days, course.start_time, course.end_time, index])
         }
     })
 
+    // CREATE A VARIABLE FOR POST MODEL FILTERING
+    // EXAMPLE: modelResults
 
-  
+    console.log(courseListForModel);
+
     // Return the filtered list of courses (those that do not match)
     //return filteredCourses;
   }

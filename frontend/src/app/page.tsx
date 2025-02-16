@@ -184,7 +184,7 @@ export default function Home() {
               </div>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline">Advanced Options</Button>
+                  <Button>Advanced Options</Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80">
                   <div className="grid gap-4">
