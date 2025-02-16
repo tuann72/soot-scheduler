@@ -28,6 +28,23 @@ import { useState,useEffect } from "react";
 
 import { filterCoursesByCodes } from "@/lib/filter"
 
+type Course = {
+  available_seats: number;
+  course_no: string;
+  crn: string;
+  end_time: string;
+  meeting_days: string;
+  section_no: string;
+  start_time: string;
+  subject: string;
+  title: string;
+  professor: string;
+};
+
+type Schedules = {
+  [key: string]: Course[];
+};
+
 export default function Home() {
   const { theme, setTheme } = useTheme()
 
@@ -91,7 +108,8 @@ export default function Home() {
       const result = await response.json();
       setData(result); // Store the fetched data
       if (data) {
-        const recomdSchedules = await filterCoursesByCodes(data,text);
+        const schedules : Schedules = await filterCoursesByCodes(data,text);
+        console.log(schedules)
       }
     } catch (err) {
       setError("Failed to fetch data"); // Handle error
