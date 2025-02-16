@@ -4,7 +4,7 @@ import Link from "next/link"; // Import Link for navigation
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu"; // Ensure the correct path
 import "./globals.css";
 import { Separator } from "@/components/ui/separator"
-
+import { ThemeProvider } from "@/components/theme-provider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         {/* Navigation Menu */}
         <div className="flex w-full justify-end px-4 py-3">
           <NavigationMenu className="w-1000 ">
@@ -57,6 +63,7 @@ export default function RootLayout({
 
         {/* Main content */}
         {children}
+        </ThemeProvider>
       </body>
     </html>
   );

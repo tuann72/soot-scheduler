@@ -6,6 +6,16 @@ import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
+import { Moon, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import {
   Card,
   CardContent,
@@ -26,6 +36,8 @@ import { useState,useEffect } from "react";
 import { filterCoursesByCodes } from "@/lib/filter"
 
 export default function Home() {
+  const { theme, setTheme } = useTheme()
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -289,6 +301,19 @@ export default function Home() {
             </CardFooter>
           </Card>
         </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          className="fixed bottom-4 right-4 z-50"
+        >
+          {theme === "light" ? (
+            <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />
+          ) : (
+            <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
+          )}
+          <span className="sr-only">Toggle theme</span>
+        </Button>
       </main>
     </div>
   )

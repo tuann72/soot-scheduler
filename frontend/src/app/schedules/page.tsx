@@ -185,7 +185,7 @@ import {
                               <HoverCardTrigger className="semi-bold hover:text-blue-500 cursor-pointer">
                               {course.title} ({course.course_no})
                               </HoverCardTrigger>
-                              <HoverCardContent className="p-4 bg-white shadow-lg rounded-lg max-w-xs" side={courseIndex < 3 ? "bottom" : "top"}>
+                              <HoverCardContent className="p-4 shadow-lg rounded-lg max-w-xs" side={courseIndex < 3 ? "bottom" : "top"}>
                                 <p><strong>Professor:</strong> {course.professor}</p>
                                 <p><strong>Time:</strong> {course.start_time} - {course.end_time}</p>
                                 <p><strong>Meeting Days:</strong> {course.meeting_days}</p>
