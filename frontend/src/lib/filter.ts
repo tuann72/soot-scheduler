@@ -1,3 +1,5 @@
+"use server"
+require('dotenv').config();
 import OpenAI from 'openai';
 
 interface Course {

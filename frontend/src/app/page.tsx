@@ -172,7 +172,7 @@ export default function Home() {
       }
 
       const response = await fetch('/api/generateSchedule', {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
