@@ -19,20 +19,22 @@ def home():
 
 def parse_course_data(json_data):
 
-    # Extract course number
+    # Extract CRN
     crn = json_data["CRN"]
 
-    # Extract course number
+    # Extract subject
     subject = json_data["subject"]
 
     # Extract course number
     course_no = json_data["courseNum"]
 
-    # Extract course number
+    # Extract section number
     section_no = json_data["sectionNum"]
 
-    # Extract course number
+    # Extract title
     title = json_data["title"]
+
+    prof = json_data["professorName"]
 
     # Extract available seats
     seats_pattern = re.search(r"(\d+) out of (\d+)", json_data["seats"])
@@ -51,6 +53,7 @@ def parse_course_data(json_data):
         "course_no": course_no,
         "section_no": section_no,
         "title": title,
+        "professor": prof,
         "available_seats": available_seats,
         "start_time": start_time,
         "end_time": end_time,

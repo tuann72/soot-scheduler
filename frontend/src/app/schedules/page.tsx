@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card"
 
 export default function Schedules(){
+
     return(
         <div className="flex justify-center min-h-screen items-center">
             <Carousel className="w-full max-w-xs">
