@@ -91,7 +91,7 @@ export default function Home() {
       const result = await response.json();
       setData(result); // Store the fetched data
       if (data) {
-        const recomdSchedules = filterCoursesByCodes(data,text);
+        const recomdSchedules = await filterCoursesByCodes(data,text);
       }
     } catch (err) {
       setError("Failed to fetch data"); // Handle error
@@ -144,50 +144,6 @@ export default function Home() {
     console.log('Include GenEd changed:', includeGenEd);
   }, [includeGenEd]);
 
-  interface SemesterSchedule {
-    semester: string;
-    courses: string[];
-  }
-  const [schedule, setSchedule] = useState<SemesterSchedule[]>([]);
-
-  const handleGenerateSchedule = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const cleanedClasses = text
-        .split(',')
-        .map(c => c.trim().toUpperCase())
-        .filter(c => c.length > 0);
-
-      if (cleanedClasses.length === 0) {
-        throw new Error('Please enter at least one course');
-      }
-
-      const response = await fetch('/api/generateSchedule', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          classes: cleanedClasses.join(', ')
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate schedule');
-      }
-
-      const result = await response.json();
-      console.log(result);
-      setSchedule(result.schedule);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate schedule');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div>
@@ -231,7 +187,6 @@ export default function Home() {
                 <Button 
                   onClick={() => {
                     handleClick();
-                    handleGenerateSchedule();
                   }} 
                   disabled={loading}
                 >
