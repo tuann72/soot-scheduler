@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Link from "next/link";
-
+import Image from "next/image"
 
 import {
   Card,
@@ -24,6 +23,42 @@ export default function Home() {
 
   const [text, setText] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+
+  // SVGs as imports or images
+  const svgs = [
+    "soot-1.svg",
+    "soot-2.svg",
+    "soot-3.svg",
+    "soot-4.svg"
+  ];
+
+  const [positions, setPositions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const generateRandomPositions = () => {
+      const randomPos: any[] = [];
+
+      svgs.forEach((_, svgIndex) => {
+        for (let i = 0; i < 5; i++) {
+          const top = Math.random() * 80 + "%"; // Random top position (80% of the screen)
+          const left = Math.random() * 80 + "%"; // Random left position (80% of the screen)
+          const rotate = Math.random() * 45 + "deg"; // Random rotation angle
+
+          // Store the positions
+          randomPos.push({
+            svgIndex,
+            top,
+            left,
+            rotate,
+          });
+        }
+      });
+
+      setPositions(randomPos);
+    };
+
+    generateRandomPositions(); // Generate positions on component mount
+  }, []);
 
   const handleClick = async () => {
     setLoading(true);
@@ -79,6 +114,27 @@ export default function Home() {
 
   return (
     <div>
+      {positions.map((pos, index) => (
+        <div
+          key={index}
+          className="absolute"
+          style={{
+            top: pos.top,
+            left: pos.left,
+            transform: `rotate(${pos.rotate}) scale(${pos.scale})`,
+            zIndex: -1, // Make sure they stay in the background
+          }}
+        >
+          <Image
+            src={svgs[pos.svgIndex]} // Use the current SVG from the array
+            alt={`SVG ${pos.svgIndex + 1}`}
+            width={100} // Default size, you can adjust
+            height={100} // Default size, you can adjust
+            className="object-contain"
+          />
+        </div>
+      ))}
+
       <main className="min-h-screen flex flex-col justify-center items-center">
         <div className=" flex-col space-y-4">
           <Card>
