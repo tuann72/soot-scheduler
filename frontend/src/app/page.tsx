@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 import {
   Card,
@@ -13,6 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 import { useState,useEffect } from "react";
 
@@ -25,6 +32,10 @@ export default function Home() {
 
   const [text, setText] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+
+  const [startTime, setStartTime] = useState('9:00AM');
+  const [endTime, setEndTime] = useState('2:00PM');
+  const [includeGenEd, setIncludeGenEd] = useState('true');
 
   // SVGs as imports or images
   const svgs = [
@@ -116,6 +127,18 @@ export default function Home() {
     console.log("File selected:", file);
   }, [file]); // This will run every time the `file` state changes
 
+  useEffect(() => {
+    console.log('Start Time changed:', startTime);
+  }, [startTime]);
+
+  useEffect(() => {
+    console.log('End Time changed:', endTime);
+  }, [endTime]);
+
+  useEffect(() => {
+    console.log('Include GenEd changed:', includeGenEd);
+  }, [includeGenEd]);
+
   return (
     <div>
       {positions.map((pos, index) => (
@@ -149,17 +172,71 @@ export default function Home() {
             <CardContent>
             <Textarea onChange={onTextChange} maxLength={300} placeholder="Type your message here." className="h-50[px] max-h-[200px]"/>
             </CardContent>
-            <CardFooter className="flex justify-between items-end space-x-2">
-              <div>
-                <Label htmlFor="picture">Upload png, jpeg, and PDF.</Label>
-                <Input onChange={onHandleFileChange} id="picture" type="file"/>
+            <CardFooter className="flex-col space-y-4">
+              <div className="flex justify-between items-end space-x-2">
+                <div>
+                  <Label htmlFor="picture">Upload png, jpeg, and PDF.</Label>
+                  <Input onChange={onHandleFileChange} id="picture" type="file"/>
+                </div>
+                <Button onClick={handleClick} disabled={loading}>
+                  {loading ? "Sooting..." : "Soot Schedule"}
+                </Button>
               </div>
-              <Button onClick={handleClick} disabled={loading}>
-                {loading ? "Sooting..." : "Soot Schedule"}
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">Advanced Options</Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">Parameters</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Set additional filters.
+                      </p>
+                    </div>
+                    <div className="grid gap-2">
+                      {/* Start Time Input */}
+                      <div className="grid grid-cols-3 items-center gap-4">
+                        <Label htmlFor="startTime">Start Time</Label>
+                        <Input
+                          id="startTime"
+                          value={startTime}
+                          onChange={(e) => setStartTime(e.target.value)} // Update state on input change
+                          className="col-span-2 h-8"
+                        />
+                      </div>
+                      
+                      {/* End Time Input */}
+                      <div className="grid grid-cols-3 items-center gap-4">
+                        <Label htmlFor="endTime">End Time</Label>
+                        <Input
+                          id="endTime"
+                          value={endTime}
+                          onChange={(e) => setEndTime(e.target.value)} // Update state on input change
+                          className="col-span-2 h-8"
+                        />
+                      </div>
+
+                      {/* Include GenEd Radio Group */}
+                      <div className="grid grid-cols-3 items-center gap-4">
+                        <Label htmlFor="useGenEd">Include General Ed.</Label>
+                        <RadioGroup value={includeGenEd} onValueChange={setIncludeGenEd}>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="true" id="r1" />
+                            <Label htmlFor="r1">true</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="false" id="r2" />
+                            <Label htmlFor="r2">false</Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </CardFooter>
           </Card>
-          <Button>Temp</Button>
         </div>
       </main>
     </div>

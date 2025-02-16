@@ -8,6 +8,7 @@ interface Course {
     start_time: string;
     subject: string;
     title: string;
+    professor: string;
 }
   
 // Helper function to filter out the courses (i.e., remove the specified courses)
@@ -26,7 +27,7 @@ export function filterCoursesByCodes(
         const courseCode = `${cleanedSubject}${course.course_no}`; // Combine subject and course_no
 
         if (keepCoursesFix.includes(courseCode)) {
-            const courseInfo = [courseCode, course.meeting_days, course.start_time, course.end_time, index]
+            const courseInfo = [courseCode, course.meeting_days, course.start_time, course.end_time]
             console.log(courseInfo);
         }
     })
