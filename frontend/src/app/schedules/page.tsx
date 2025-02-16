@@ -171,7 +171,7 @@ import {
           <CarouselContent>
             {scheduleKeys.map((scheduleKey, index) => (
               <CarouselItem key={scheduleKey}>
-                <Card className="z-0">
+                <Card>
                   <CardContent className="flex aspect-square items-center justify-center p-6">
                     <div className="w-full">
                       <h3 className="text-xl font-semibold mb-4">
@@ -179,13 +179,13 @@ import {
                       </h3>
                       <ul className="space-y-4">
                         {schedules[scheduleKey].map((course, courseIndex) => (
-                          <li key={course.crn} className="border-b pb-4">
+                          <li key={course.crn}>
                             {/* HoverCard for each course */}
                             <HoverCard>
                               <HoverCardTrigger className="semi-bold hover:text-blue-500 cursor-pointer">
                               {course.title} ({course.course_no})
                               </HoverCardTrigger>
-                              <HoverCardContent className="p-4 bg-white shadow-lg rounded-lg max-w-xs z-10">
+                              <HoverCardContent className="p-4 bg-white shadow-lg rounded-lg max-w-xs" side={courseIndex < 3 ? "bottom" : "top"}>
                                 <p><strong>Professor:</strong> {course.professor}</p>
                                 <p><strong>Time:</strong> {course.start_time} - {course.end_time}</p>
                                 <p><strong>Meeting Days:</strong> {course.meeting_days}</p>
