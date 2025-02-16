@@ -22,6 +22,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [text, setText] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+
   const handleClick = async () => {
     setLoading(true);
     setError(null);
@@ -42,6 +45,29 @@ export default function Home() {
     }
   };
 
+  // Function to handle the text change event
+  const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value); // Update the text state with the new value
+    console.log(text)
+  };
+
+  // Handle file input change
+  const onHandleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
+
+    // Check if a file is selected
+    if (!selectedFile) {
+      setError("Please select a file.");
+      setFile(null);
+      return;
+    }
+  
+    // If all checks pass, set the file
+    setFile(selectedFile);
+    setError(null);  // Clear any previous errors
+    console.log(file)
+  };
+
   return (
     <div>
       <main className="min-h-screen flex flex-col justify-center items-center">
@@ -52,19 +78,16 @@ export default function Home() {
               <CardDescription>Seperate course codes by commas (CS1234, MATH1234)</CardDescription>
             </CardHeader>
             <CardContent>
-            <Textarea maxLength={300} placeholder="Type your message here." className="h-50[px] max-h-[200px]"/>
+            <Textarea value={text} onChange={onTextChange} maxLength={300} placeholder="Type your message here." className="h-50[px] max-h-[200px]"/>
             </CardContent>
             <CardFooter className="flex justify-between items-end space-x-2">
               <div>
                 <Label htmlFor="picture">Upload png, jpeg, and PDF.</Label>
-                <Input id="picture" type="file"/>
+                <Input onChange={onHandleFileChange} id="picture" type="file"/>
               </div>
               <Button onClick={handleClick} disabled={loading}>
                 {loading ? "Sooting..." : "Soot Schedule"}
               </Button>
-              <div>
-              {JSON.stringify(data, null, 2)}
-              </div>
             </CardFooter>
           </Card>
         </div>
