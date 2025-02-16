@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 export default function Home() {
   const [data, setData] = useState(null);
@@ -48,7 +48,6 @@ export default function Home() {
   // Function to handle the text change event
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value); // Update the text state with the new value
-    console.log(text)
   };
 
   // Handle file input change
@@ -68,6 +67,16 @@ export default function Home() {
     console.log(file)
   };
 
+  // UseEffect to log text state changes
+  useEffect(() => {
+    console.log("Text changed:", text);
+  }, [text]); // This will run every time the `text` state changes
+
+  // UseEffect to log file state changes
+  useEffect(() => {
+    console.log("File selected:", file);
+  }, [file]); // This will run every time the `file` state changes
+
   return (
     <div>
       <main className="min-h-screen flex flex-col justify-center items-center">
@@ -78,7 +87,7 @@ export default function Home() {
               <CardDescription>Seperate course codes by commas (CS1234, MATH1234)</CardDescription>
             </CardHeader>
             <CardContent>
-            <Textarea value={text} onChange={onTextChange} maxLength={300} placeholder="Type your message here." className="h-50[px] max-h-[200px]"/>
+            <Textarea onChange={onTextChange} maxLength={300} placeholder="Type your message here." className="h-50[px] max-h-[200px]"/>
             </CardContent>
             <CardFooter className="flex justify-between items-end space-x-2">
               <div>
